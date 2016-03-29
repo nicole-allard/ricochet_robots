@@ -1,0 +1,110 @@
+board
+    spaces
+        spaces adjacent (null if wall) {
+            north
+            east
+            south
+            west
+        }
+        robot
+        token
+    robots
+        id
+        space
+        color
+    tokens
+        id
+        space
+        color
+
+SERVER
+When start up server:
+    Set up game state:
+        players: []
+        in progress: false
+        board: null
+When players connect:
+    ask them to enter a name. don't allow continue until name.
+    Once name, add to current players.
+    If game in progress, go to it.
+    else if first player: show a "begin game" button
+    else show waiting
+On begin game:
+    Create board
+        Determine random board configuration
+        Determine random location for robots to start
+    Start periodic time syncing with players
+    Display board
+    Begin rounds
+On begin round:
+    If tokens remaining:
+        Choose/display random token
+    else:
+        Display scores
+On bid from client:
+    Ensure time makes sense
+    Store bid
+    Tell all clients to start a 30 second timer
+    Sync bids collection
+On receiving 30 sec timeout
+    If number of timeouts == number of players
+        resend bids to players with message to start proving bid
+On receiving pass/fail from current bidder
+    If pass, increment bidder's score
+    else if more bids pass turn to prove bid
+    else send draw message
+    start new round
+On receiving defeat from player
+    If all players have conceded
+        If last token
+            end game
+        else
+            start new round
+    else if first concede
+        sync conceded collection with all players
+
+CLIENT
+    On login screen
+        confirm valid entry
+        on click begin game, send begin game
+    On game screen
+        Periodically send timestamp to server
+        On keypress
+            If number:
+                append to previous number key presses
+                Clear previous timeouts
+                Set timeout for more keys
+            else:
+                Clear previous number key presses
+                Clear previous timeouts
+        On keypress timeout
+            send bid with timestamp to server
+        On send bid with timestamp to server
+            ensure countdown not timed out
+        On bid click
+            send bid with timestamp
+        On receiving countdown start
+            start a timeout, display timer
+        On receiving bids sync
+            Show/update bids display
+        On countdown end
+            Send countdown end
+        On receiving message to start proving bid
+            Bind controls to move robots
+                R/B/G/Y to activate robot of color
+                arrows to move active robot
+                click on robot to activate robot
+                click on arrows to move active robot
+                click restart to reset moves
+                    verify exception with other players
+            On activate robot
+                ensure robot hasn't moved already
+            On move robot
+                animate motion
+                store movement
+                update moves display
+                check for win
+                send move to all other players
+            On hit token
+                if number of moves exceeded bid
+                    verify exception with other players
