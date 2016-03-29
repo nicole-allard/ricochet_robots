@@ -1,3 +1,9 @@
+Project set up:
+    Get node server up and communicating via sockets with client
+    Set up webpack with babel loader to transpile es6 js
+    Set up middleware to hot load code changes
+    Set up React FE
+
 board
     spaces
         spaces adjacent (null if wall) {
@@ -107,7 +113,3 @@ CLIENT
             On hit token
                 if number of moves exceeded bid
                     verify exception with other players
-
-
-FILES
-    need an... entry point? initializes or joins current game.. something?

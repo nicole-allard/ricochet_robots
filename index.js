@@ -1,18 +1,16 @@
-/**
- * Module dependencies.
- */
+'use strict';
 
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+let express = require('express');
+let app = express();
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
 
 app.configure(function(){
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.favicon());
     app.use(express.logger('dev'));
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + '/lib'));
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
@@ -23,7 +21,7 @@ app.configure('development', function(){
 });
 
 // TODO: Move everything below into separate files
-var game;
+let game;
 app.get('/', function(request, response) {
     response.render('index', {
         game: game

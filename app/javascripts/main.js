@@ -1,7 +1,16 @@
-socket = io();
+'use strict';
+
+require("../stylesheets/style.css");
+
+let socket = io();
 
 socket.on('game', function (game) {
-    $('.content').html(JSON.stringify(game));
+    // $('.content').html(JSON.stringify(game));
+    let $usersList = $('<ul>');
+    Object.keys(game.users).forEach(function (username) {
+        $usersList.append($('<li>').text(username));
+    });
+    $('.content').html($usersList);
 });
 
 $(function () {
