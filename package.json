@@ -1,13 +1,13 @@
 {
-  "name": "application-name",
+  "name": "ricochet robots",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "4.13.4",
     "jade": "*",
-    "socket.io": "latest"
+    "socket.io": "1.0"
   }
 }
