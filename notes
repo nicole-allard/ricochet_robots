@@ -9,11 +9,9 @@ board
         robot
         token
     robots
-        id
         space
         color
     tokens
-        id
         space
         color
 
@@ -33,8 +31,9 @@ On begin game:
     Create board
         Determine random board configuration
         Determine random location for robots to start
-    Start periodic time syncing with players
-    Display board
+        Determine token locations, sort random order
+    Start periodic time syncing with players    ** nice to have
+    Display board - just walls and robots
     Begin rounds
 On begin round:
     If tokens remaining:
@@ -42,7 +41,7 @@ On begin round:
     else:
         Display scores
 On bid from client:
-    Ensure time makes sense
+    Ensure time makes sense     ** nice to have
     Store bid
     Tell all clients to start a 30 second timer
     Sync bids collection
@@ -108,3 +107,7 @@ CLIENT
             On hit token
                 if number of moves exceeded bid
                     verify exception with other players
+
+
+FILES
+    need an... entry point? initializes or joins current game.. something?
