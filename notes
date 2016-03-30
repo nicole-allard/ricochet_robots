@@ -1,8 +1,10 @@
 Project set up:
     Get node server up and communicating via sockets with client
     Set up webpack with babel loader to transpile es6 js
-    Set up middleware to hot load code changes
+    Set up hotloading of server side code changes (nodemon)
     Set up React FE
+    Set up hotloading of client side changes (http://ctheu.com/2015/05/14/using-react-hot-loader-with-a-webpack-dev-server-and-a-node-server/)
+    Set up Babel autobind decorator https://github.com/andreypopp/autobind-decorator
 
 board
     spaces
