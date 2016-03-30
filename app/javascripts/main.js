@@ -8,7 +8,7 @@ socket.on('game', function (game) {
     // $('.content').html(JSON.stringify(game));
     let $usersList = $('<ul>');
     Object.keys(game.users).forEach(function (username) {
-        $usersList.append($('<li>').text(username));
+        $usersList.append($('<li>').text(JSON.stringify(game.users[username])));
     });
     $('.content').html($usersList);
 });

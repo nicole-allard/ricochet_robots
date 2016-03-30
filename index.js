@@ -5,20 +5,9 @@ let app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-app.configure(function(){
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'jade');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.static(__dirname + '/lib'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler());
-});
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(express.static(__dirname + '/lib'));
 
 // TODO: Move everything below into separate files
 let game;
