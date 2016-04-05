@@ -8,7 +8,7 @@ module.exports = {
   devtool: 'eval-source-map',
   entry: path.join(__dirname, 'app/javascripts/main.js'),
   output: {
-    path: path.join(__dirname, '/lib/'),
+    path: path.join(__dirname, '/lib/scripts/'),
     filename: 'bundle.js'
   },
   module: {

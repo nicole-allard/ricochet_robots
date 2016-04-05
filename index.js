@@ -1,28 +1,34 @@
 'use strict';
 
 let express = require('express');
-let webpack = require('webpack');
-let webpackDevMiddleware = require('webpack-dev-middleware');
 let app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
-let config = require('./webpack.dev.config.js');
-let compiler = webpack(config);
+let config = require('./common.js');
+
+const isDev = process.env.NODE_ENV !== 'production';
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath,
-    stats: { colors: true }
-}));
+
+if (isDev) {
+    let webpack = require('webpack');
+    let webpackDevMiddleware = require('webpack-dev-middleware');
+    let webpackConfig = require('./' + config.webpackConfig);
+    let compiler = webpack(webpackConfig);
+    app.use(webpackDevMiddleware(compiler, {
+        publicPath: webpackConfig.output.publicPath,
+        stats: { colors: true }
+    }));
+} else {
+    app.use(express.static(__dirname + '/lib'));
+}
 
 // TODO: Move everything below into separate files
 let game;
 app.get('/', function(request, response) {
-    response.render('index', {
-        game: game
-    });
+    response.render('index');
 });
 
 io.on('connection', function (socket) {
