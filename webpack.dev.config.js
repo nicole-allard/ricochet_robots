@@ -6,9 +6,12 @@ module.exports = {
 
   // Gives you sourcemaps without slowing down rebundling
   devtool: 'eval-source-map',
-  entry: path.join(__dirname, 'app/javascripts/main.js'),
+  entry: [
+    path.join(__dirname, 'app/javascripts/main.js')
+  ],
   output: {
-    path: path.join(__dirname, '/lib/'),
+    path: '/',
+    publicPath: 'http://localhost:3000/scripts/',
     filename: 'bundle.js'
   },
   module: {

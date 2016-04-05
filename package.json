@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "server": "nodemon index.js --exec babel-node",
+    "dev": "nodemon index.js --exec babel-node",
     "build": "node_modules/webpack/bin/webpack.js"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "webpack": "^1.12.14"
   },
   "devDependencies": {
-    "nodemon": "^1.9.1"
+    "nodemon": "^1.9.1",
+    "webpack-dev-middleware": "^1.6.1"
   }
 }

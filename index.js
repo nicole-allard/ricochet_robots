@@ -1,13 +1,21 @@
 'use strict';
 
 let express = require('express');
+let webpack = require('webpack');
+let webpackDevMiddleware = require('webpack-dev-middleware');
 let app = express();
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 
+let config = require('./webpack.dev.config.js');
+let compiler = webpack(config);
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
-app.use(express.static(__dirname + '/lib'));
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    stats: { colors: true }
+}));
 
 // TODO: Move everything below into separate files
 let game;
@@ -16,7 +24,6 @@ app.get('/', function(request, response) {
         game: game
     });
 });
-
 
 io.on('connection', function (socket) {
     if (!game) {
