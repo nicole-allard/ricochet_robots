@@ -6,4 +6,4 @@ let App = require('./app.js');
 
 require('../stylesheets/style.css');
 
-ReactDOM.render(<App />, document.body);
+ReactDOM.render(<App />, document.getElementById('content'));
