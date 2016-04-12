@@ -4,8 +4,6 @@ let path = require('path');
 
 module.exports = {
 
-  // Gives you sourcemaps without slowing down rebundling
-  devtool: 'eval-source-map',
   entry: path.join(__dirname, 'app/javascripts/main.js'),
   output: {
     path: path.join(__dirname, '/lib/scripts/'),
@@ -17,8 +15,8 @@ module.exports = {
       exclude: /node_modules/,
       loader: 'babel-loader'
     }, {
-        test: /\.css$/,
-        loader: 'style!css'
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"]
     }]
   }
 };

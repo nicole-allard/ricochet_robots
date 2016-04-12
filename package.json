@@ -19,8 +19,10 @@
     "css-loader": "^0.23.1",
     "express": "4.13.4",
     "jade": "*",
+    "node-sass": "^3.4.2",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
+    "sass-loader": "^3.2.0",
     "socket.io": "1.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.14"
