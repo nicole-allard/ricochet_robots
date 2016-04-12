@@ -16,9 +16,7 @@ module.exports = class App extends React.Component {
     }
 
     updateGame (game) {
-        this.setState({
-            users: game.users
-        });
+        this.setState(game);
     }
 
     login (evt) {
@@ -39,10 +37,36 @@ module.exports = class App extends React.Component {
                 </form>
 
                 <ul>
-                    {Object.keys(this.state.users).map(function (username) {
-                        return (<li>{JSON.stringify(this.state.users[username])}</li>);
+                    {Object.keys(this.state.users).map((username) => {
+                        return (
+                            <li key={username}>
+                                {JSON.stringify(this.state.users[username])}
+                            </li>
+                        );
                     }, this)}
                 </ul>
+
+                {this.state.board ?
+                    <div className="board">
+                        {this.state.board.spaces.map((row, index) => {
+                            return (
+                                <div className="row" key={index}>
+                                    {row.map((cell, index) => {
+                                        return (
+                                            <div className={`cell ${cell.walls}`} key={index}>
+                                                {cell.robot ?
+                                                    <span className={`robot ${cell.robot}`}></span> :
+                                                    null
+                                                }
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    : null
+                }
             </div>
         );
     }

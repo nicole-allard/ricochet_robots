@@ -25,6 +25,8 @@ if (isDev) {
     app.use(express.static(__dirname + '/lib'));
 }
 
+let Game = require('./models/game');
+
 // TODO: Move everything below into separate files
 let game;
 app.get('/', function(request, response) {
@@ -34,7 +36,7 @@ app.get('/', function(request, response) {
 io.on('connection', function (socket) {
     if (!game) {
         console.log('game created');
-        game = { users: {} };
+        game = new Game();
     }
 
     console.log('A new user connected!');
@@ -44,14 +46,14 @@ io.on('connection', function (socket) {
         console.log('user disconnected');
         if (socket.username) {
             game.users[socket.username].status = 'disconnected';
-            io.emit('game', game);
+            socket.emit('game', game);
         }
     });
 
     socket.on('join', function (username) {
         socket.username = username;
         game.users[username] = { username: username, status: 'connected' };
-        io.emit('game', game);
+        socket.emit('game', game);
     });
 });
 

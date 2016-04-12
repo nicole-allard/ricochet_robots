@@ -1,9 +1,101 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: red;
+.row {
+    margin-bottom: -4px;
 }
 
-a {
-  color: #00B7FF;
+.cell {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border: 1px solid black;
+    margin: -1px -1px 0 0;
+}
+
+.cell.N {
+    border-top-width: 5px;
+    margin-top: -6px;
+}
+
+.cell.E {
+    border-right-width: 5px;
+    margin-right: -6px;
+}
+
+.cell.S {
+    border-bottom-width: 5px;
+    margin-bottom: -5px;
+}
+
+.cell.W {
+    border-left-width: 5px;
+    margin-left: -5px;
+}
+
+.cell.NW {
+    border-top-width: 5px;
+    margin-top: -6px;
+    border-left-width: 5px;
+    margin-left: -5px;
+}
+
+.cell.NE {
+    border-top-width: 5px;
+    margin-top: -6px;
+    border-right-width: 5px;
+    margin-right: -6px;
+}
+
+.cell.SE {
+    border-bottom-width: 5px;
+    margin-bottom: -5px;
+    border-right-width: 5px;
+    margin-right: -6px;
+}
+
+.cell.SW {
+    border-bottom-width: 5px;
+    margin-bottom: -5px;
+    border-left-width: 5px;
+    margin-left: -5px;
+}
+
+.cell.NESW {
+    border-width: 5px;
+    margin: -6px -6px -5px -5px;
+}
+
+.robot {
+    display: block;
+    margin: auto;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+
+    &.yellow {
+        background-color: yellow;
+    }
+
+    &.red {
+        background-color: red;
+    }
+
+    &.green {
+        background-color: green;
+    }
+
+    &.blue {
+        background-color: blue;
+    }
+}
+
+.robot.yellow {
+    background-color: yellow;
+}
+.robot.red {
+    background-color: red;
+}
+.robot.green {
+    background-color: green;
+}
+.robot.blue {
+    background-color: blue;
 }
