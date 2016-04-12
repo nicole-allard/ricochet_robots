@@ -5,7 +5,7 @@ let path = require('path');
 module.exports = {
 
   // Gives you sourcemaps without slowing down rebundling
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   entry: [
     path.join(__dirname, 'app/javascripts/main.js')
   ],
