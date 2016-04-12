@@ -46,14 +46,18 @@ io.on('connection', function (socket) {
         console.log('user disconnected');
         if (socket.username) {
             game.users[socket.username].status = 'disconnected';
-            socket.emit('game', game);
+            io.sockets.emit('game', game);
         }
     });
 
     socket.on('join', function (username) {
         socket.username = username;
+        if (game.users[username] && game.users[username].status === 'connected')
+            return void socket.emit('joinErr', `${username} is already taken. Please choose a new username`);
+
         game.users[username] = { username: username, status: 'connected' };
-        socket.emit('game', game);
+        socket.emit('joined', username);
+        io.sockets.emit('game', game);
     });
 });
 

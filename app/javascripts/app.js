@@ -1,41 +1,66 @@
 'use strict';
 
 let React = require('react');
+let Login = require('./login');
 
 module.exports = class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: {}
+            username: null,
+            users: {},
+            errs: {}
         };
     }
 
     componentDidMount () {
         this.socket = io();
-        this.socket.on('game', Function.bind.call(this.updateGame, this));
+        this.socket.on('game', this.updateGame.bind(this));
+        this.socket.on('joined', this.onJoin.bind(this));
+        this.socket.on('joinErr', this.handleErr.bind(this, 'join'));
     }
 
     updateGame (game) {
         this.setState(game);
     }
 
-    login (evt) {
-        evt.preventDefault();
-        const username = this.refs.username.value;
-        this.socket.emit('join', username);
-        return false;
+    /**
+     * On a successful join, set username and clear out any
+     * previous join errors
+     *
+     * @param  {String} username
+     */
+    onJoin (username) {
+        this.setState({
+            username: username,
+            errs: this.getUpdatedErrs('join', null)
+        });
+    }
+
+    /**
+     * Builds an object with all the current errs and a
+     * newly updated key/value.
+     *
+     * @param  {String} key - The error key to reset
+     * @param  {String} [value] - The new err value for
+     *                            the given key
+     * @return {Object}
+     */
+    getUpdatedErrs (key, value) {
+        return Object.assign(this.state.errs, {
+            [key]: value
+        });
+    }
+
+    handleErr (key, value) {
+        this.setState({
+            errs: this.getUpdatedErrs(key, value)
+        });
     }
 
     render () {
         return (
             <div>
-                <form name="join" onSubmit={this.login.bind(this)}>
-                    <input type="text" ref="username" placeholder="username" />
-                    <button type="button">
-                        Join Game
-                    </button>
-                </form>
-
                 <ul>
                     {Object.keys(this.state.users).map((username) => {
                         return (
@@ -46,26 +71,31 @@ module.exports = class App extends React.Component {
                     }, this)}
                 </ul>
 
-                {this.state.board ?
-                    <div className="board">
-                        {this.state.board.spaces.map((row, index) => {
-                            return (
-                                <div className="row" key={index}>
-                                    {row.map((cell, index) => {
-                                        return (
-                                            <div className={`cell ${cell.walls}`} key={index}>
-                                                {cell.robot ?
-                                                    <span className={`robot ${cell.robot}`}></span> :
-                                                    null
-                                                }
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            );
-                        })}
-                    </div>
-                    : null
+                {this.state.username ?
+                    this.state.board ?
+                        <div className="board">
+                            {this.state.board.spaces.map((row, index) => {
+                                return (
+                                    <div className="row" key={index}>
+                                        {row.map((cell, index) => {
+                                            return (
+                                                <div className={`cell ${cell.walls}`} key={index}>
+                                                    {cell.robot ?
+                                                        <span className={`robot ${cell.robot}`}></span> :
+                                                        null
+                                                    }
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        : null
+                    : <Login
+                        socket={this.socket}
+                        err={this.state.errs.join}
+                    />
                 }
             </div>
         );
