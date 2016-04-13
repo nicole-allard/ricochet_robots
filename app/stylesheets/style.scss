@@ -9,7 +9,7 @@ $wall-width: 4px;
     &:not(:first-child) {
         margin-top: -$border-width;
 
-        .cell[class*='N'] {
+        .cell:not(.NESW)[class*='N'] {
             margin-top: -($wall-width/2);
         }
     }
@@ -25,30 +25,36 @@ $wall-width: 4px;
         margin-left: -$border-width;
     }
 
-    &[class*='N'] {
-        border-top-width: $wall-width + $border-width;
-        height: $cell-size - ($wall-width/2);
-    }
-
-    &[class*='E'] {
-        border-right-width: $wall-width + $border-width;
-        width: $cell-size - ($wall-width/2);
-        margin-right: -($wall-width/2);
-    }
-
-    &[class*='S'] {
-        border-bottom-width: $wall-width + $border-width;
-        height: $cell-size - ($wall-width/2);
-        margin-bottom: -($wall-width/2);
-    }
-
-    &[class*='W'] {
-        border-left-width: $wall-width + $border-width;
-        width: $cell-size - ($wall-width/2);
-
-        &:not(:first-child) {
-            margin-left: -($wall-width/2);
+    &:not(.NESW) {
+        &[class*='N'] {
+            border-top-width: $wall-width + $border-width;
+            height: $cell-size - ($wall-width/2);
         }
+
+        &[class*='E'] {
+            border-right-width: $wall-width + $border-width;
+            width: $cell-size - ($wall-width/2);
+            margin-right: -($wall-width/2);
+        }
+
+        &[class*='S'] {
+            border-bottom-width: $wall-width + $border-width;
+            height: $cell-size - ($wall-width/2);
+            margin-bottom: -($wall-width/2);
+        }
+
+        &[class*='W'] {
+            border-left-width: $wall-width + $border-width;
+            width: $cell-size - ($wall-width/2);
+
+            &:not(:first-child) {
+                margin-left: -($wall-width/2) - $border-width;
+            }
+        }
+    }
+
+    &.NESW {
+        background-color: black;
     }
 }
 
