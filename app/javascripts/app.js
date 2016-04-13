@@ -1,7 +1,11 @@
 'use strict';
 
 let React = require('react');
+
 let Login = require('./login');
+
+let constants = require('./constants');
+let cookieUtils = require('./utils/cookies');
 
 module.exports = class App extends React.Component {
     constructor(props) {
@@ -26,11 +30,13 @@ module.exports = class App extends React.Component {
 
     /**
      * On a successful join, set username and clear out any
-     * previous join errors
+     * previous join errors. Also set a session auth cookie in
+     * case the user is disconnected.
      *
      * @param  {String} username
      */
     onJoin (username) {
+        cookieUtils.create(constants.AUTH_COOKIE, username);
         this.setState({
             username: username,
             errs: this.getUpdatedErrs('join', null)
