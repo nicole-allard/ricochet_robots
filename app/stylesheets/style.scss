@@ -1,31 +1,54 @@
 $cell-size: 50px;
 $robot-size: $cell-size/2;
+$border-width: 1px;
+$wall-width: 4px;
 
 .row {
     overflow: auto;
+
+    &:not(:first-child) {
+        margin-top: -$border-width;
+
+        .cell[class*='N'] {
+            margin-top: -($wall-width/2);
+        }
+    }
 }
 
 .cell {
     width: $cell-size;
     height: $cell-size;
     float: left;
-    border: 1px solid black;
-    margin: -1px -1px 0 0;
+    border: $border-width solid black;
+
+    &:not(:first-child) {
+        margin-left: -$border-width;
+    }
 
     &[class*='N'] {
-        border-top-width: 5px;
+        border-top-width: $wall-width + $border-width;
+        height: $cell-size - ($wall-width/2);
     }
 
     &[class*='E'] {
-        border-right-width: 5px;
+        border-right-width: $wall-width + $border-width;
+        width: $cell-size - ($wall-width/2);
+        margin-right: -($wall-width/2);
     }
 
     &[class*='S'] {
-        border-bottom-width: 5px;
+        border-bottom-width: $wall-width + $border-width;
+        height: $cell-size - ($wall-width/2);
+        margin-bottom: -($wall-width/2);
     }
 
     &[class*='W'] {
-        border-left-width: 5px;
+        border-left-width: $wall-width + $border-width;
+        width: $cell-size - ($wall-width/2);
+
+        &:not(:first-child) {
+            margin-left: -($wall-width/2);
+        }
     }
 }
 
