@@ -3,6 +3,7 @@
 let React = require('react');
 
 let Login = require('./login');
+let Board = require('./board');
 
 let constants = require('./constants');
 let cookieUtils = require('./utils/cookies');
@@ -13,7 +14,8 @@ module.exports = class App extends React.Component {
         this.state = {
             username: null,
             users: {},
-            errs: {}
+            errs: {},
+            round: {}
         };
     }
 
@@ -22,6 +24,13 @@ module.exports = class App extends React.Component {
         this.socket.on('game', this.updateGame.bind(this));
         this.socket.on('joined', this.onJoin.bind(this));
         this.socket.on('joinErr', this.handleErr.bind(this, 'join'));
+    }
+
+    newRound (evt) {
+        if (evt)
+            evt.preventDefault();
+
+        this.socket.emit('newRound');
     }
 
     updateGame (game) {
@@ -79,24 +88,15 @@ module.exports = class App extends React.Component {
 
                 {this.state.username ?
                     this.state.board ?
-                        <div className="board">
-                            {this.state.board.spaces.map((row, index) => {
-                                return (
-                                    <div className="row" key={index}>
-                                        {row.map((cell, index) => {
-                                            return (
-                                                <div className={`cell ${cell.walls}`} key={index}>
-                                                    {cell.robot ?
-                                                        <span className={`robot ${cell.robot}`}></span> :
-                                                        null
-                                                    }
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                );
-                            })}
-                        </div>
+                        <section>
+                            <div>
+                                {/* TODO disable button if round is currently in progress disabled={this.state.round.active}*/}
+                                <button onClick={this.newRound.bind(this)} >Start New Round</button>
+                            </div>
+                            <Board
+                                spaces={this.state.board.spaces}
+                            />
+                        </section>
                         : null
                     : <Login
                         socket={this.socket}

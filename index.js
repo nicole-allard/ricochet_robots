@@ -26,9 +26,9 @@ if (isDev) {
 }
 
 let Game = require('./models/game');
+let game;
 
 // TODO: Move everything below into separate files
-let game;
 app.get('/', function(request, response) {
     response.render('index');
 });
@@ -57,6 +57,11 @@ io.on('connection', function (socket) {
 
         game.users[username] = { username: username, status: 'connected' };
         socket.emit('joined', username);
+        io.sockets.emit('game', game);
+    });
+
+    socket.on('newRound', () => {
+        game.startRound();
         io.sockets.emit('game', game);
     });
 });

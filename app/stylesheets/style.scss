@@ -1,10 +1,11 @@
 $cell-size: 50px;
 $robot-size: $cell-size/2;
+$token-size: $robot-size*1.5;
 $border-width: 1px;
 $wall-width: 4px;
 
 .row {
-    overflow: auto;
+    overflow: hidden;
 
     &:not(:first-child) {
         margin-top: -$border-width;
@@ -59,10 +60,38 @@ $wall-width: 4px;
 }
 
 .robot {
+    border-radius: 50%;
     margin: $robot-size/2;
     width: $robot-size;
     height: $robot-size;
-    border-radius: 50%;
+}
+
+.token {
+    border-radius: 10%;
+    margin: ($cell-size - $token-size)/2;
+    width: $token-size;
+    height: $token-size;
+    text-align: center;
+    line-height: $token-size;
+
+    &:before {
+        content: 'X';
+        color: white;
+    }
+
+    &.all {
+        width: 0;
+        height: 0;
+        border-width: $token-size/2;
+        border-style: solid;
+        border-top-color: red;
+        border-right-color: yellow;
+        border-bottom-color: green;
+        border-left-color: blue;
+    }
+}
+
+.robot, .token {
     display: block;
 
     &.yellow {
