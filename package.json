@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon index.js --exec babel-node",
-    "build": "node_modules/webpack/bin/webpack.js",
-    "server": "NODE_ENV=production babel-node index.js"
+    "build": "webpack",
+    "server": "NODE_ENV=production node index.js"
   },
   "dependencies": {
     "babel-core": "^6.7.4",

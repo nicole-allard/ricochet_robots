@@ -1,3 +1,5 @@
+'use strict';
+
 let Board = require('./board');
 let constants = require('./constants');
 
@@ -10,8 +12,7 @@ module.exports = class Game {
 
     startRound () {
         if (this.round.active)
-            // TODO disallow beginning a new round while current round is active
-            // return;
+            // Allow users to kill current round and start a new one
             this.round.targetSpace.token = null;
 
         this.round = {

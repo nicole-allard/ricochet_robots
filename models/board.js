@@ -1,3 +1,5 @@
+'use strict';
+
 let constants = require('./constants');
 let Space = require('./space');
 

@@ -1,3 +1,5 @@
+'use strict';
+
 let constants = require('./constants');
 
 module.exports = class Space {
