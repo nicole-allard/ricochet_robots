@@ -4,6 +4,7 @@ let React = require('react');
 
 let Login = require('./login');
 let Board = require('./board');
+let Actions = require('./actions');
 
 let constants = require('./constants');
 let cookieUtils = require('./utils/cookies');
@@ -29,6 +30,11 @@ module.exports = class App extends React.Component {
     newRound (evt) {
         if (evt)
             evt.preventDefault();
+
+        if (this.state.round.active &&
+            !window.confirm('Are you sure you want to stop the current round?'))
+
+            return;
 
         this.socket.emit('newRound');
     }
@@ -89,10 +95,10 @@ module.exports = class App extends React.Component {
                 {this.state.username ?
                     this.state.board ?
                         <section>
-                            <div>
-                                {/* TODO disable button if round is currently in progress disabled={this.state.round.active}*/}
-                                <button onClick={this.newRound.bind(this)} >Start New Round</button>
-                            </div>
+                            <Actions
+                                newRound={this.newRound.bind(this)}
+                                isRoundActive={!!this.state.round.active}
+                            />
                             <Board
                                 spaces={this.state.board.spaces}
                             />

@@ -31,7 +31,7 @@ class Board extends React.Component {
 };
 
 Board.propTypes = {
-    spaces: React.PropTypes.array
+    spaces: React.PropTypes.array.isRequired
 };
 
 module.exports = Board;
