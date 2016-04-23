@@ -1,8 +1,6 @@
 Go back and fix:
-    - Consider: Set up Babel autobind decorator https://github.com/andreypopp/autobind-decorator
     - Fix styling: N and S walls are cut off, only half the wall shows
     - Add a linter
-    - Set up requirejs like syntax for importing modules
     - Move socket communication into its own file (both on BE and FE)
     - Merge BE and FE models
 

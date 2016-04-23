@@ -3,7 +3,7 @@
 let path = require('path');
 let base = require('./webpack.config.js');
 
-module.exports = Object.assign(base, {
+module.exports = Object.assign({}, base, {
 
   // Gives you sourcemaps without slowing down rebundling
   devtool: 'source-map',
