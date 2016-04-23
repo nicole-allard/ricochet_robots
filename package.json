@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development nodemon index.js --exec babel-node",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "debug": "NODE_ENV=development node-debug --debug-brk=false --no-preload index.js",
     "build": "webpack",
     "server": "NODE_ENV=production node index.js"
   },
