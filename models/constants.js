@@ -1,5 +1,8 @@
 'use strict';
 
+const SECOND_MS = 1000;
+const TIMER_LENGTH_S = 10;
+
 const LAYOUT = [
     ['N  W', 'N   ', 'N   ', 'N   ', 'NE  ', 'N   ', 'N   ', 'N   ', 'N   ', 'N   ', 'NE  ', 'N   ', 'N   ', 'N   ', 'N   ', 'NE  '],
     ['   W', '    ', '    ', '    ', '    ', '    ', ' ES ', '    ', '    ', '  SW', '    ', '    ', '    ', '    ', '    ', ' E  '],
@@ -16,19 +19,19 @@ const LAYOUT = [
     ['   W', '    ', '    ', '    ', '    ', '    ', '    ', 'NE  ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', ' E  '],
     ['   W', 'NE  ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', '  SW', '    ', '    ', '    ', '    ', '    ', ' E  '],
     ['   W', '    ', '    ', ' ES ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', '    ', 'NE  ', ' E  '],
-    ['  SW', '  S ', '  S ', '  S ', ' ES ', '  S ', '  S ', '  S ', '  S ', '  S ', '  S ', ' ES ', '  S ', '  S ', '  S ', ' ES ']
+    ['  SW', '  S ', '  S ', '  S ', ' ES ', '  S ', '  S ', '  S ', '  S ', '  S ', '  S ', ' ES ', '  S ', '  S ', '  S ', ' ES '],
 ];
 
 module.exports = {
-    LAYOUT: LAYOUT,
+    LAYOUT,
     WIDTH: LAYOUT[0].length,
     HEIGHT: LAYOUT.length,
     COLORS: [
         'blue',
         'red',
         'green',
-        'yellow'
+        'yellow',
     ],
     RAINBOW_PERCENT: 0.0625,  // 1/16 chance of generating a rainbow token
-    TIMER_LENGTH: 1000*10
-}
+    TIMER_LENGTH: SECOND_MS * TIMER_LENGTH_S,
+};

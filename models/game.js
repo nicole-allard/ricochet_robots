@@ -1,7 +1,7 @@
 'use strict';
 
-let Board = require('./board');
-let constants = require('./constants');
+const Board = require('./board');
+const constants = require('./constants');
 
 module.exports = class Game {
     constructor () {
@@ -18,7 +18,7 @@ module.exports = class Game {
         this.round = {
             active: true,
             solnClaims: [],
-            targetSpace: this.board.getRandomSpace('isValidTokenSpace')
+            targetSpace: this.board.getRandomSpace('isValidTokenSpace'),
         };
 
         let color;

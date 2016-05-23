@@ -1,39 +1,41 @@
 'use strict';
 
-let express = require('express');
-let app = express();
-let http = require('http').Server(app);
-let io = require('socket.io')(http);
+const PORT = 3000;
 
-let config = require('./common.js');
+const express = require('express');
+const app = express();
+const http = require('http').Server(app);  // eslint-disable-line new-cap
+const io = require('socket.io')(http);
+
+const config = require('./common.js');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-app.set('views', __dirname + '/views');
+app.set('views', `${__dirname}/views`);
 app.set('view engine', 'jade');
 
 if (isDev) {
-    let webpack = require('webpack');
-    let webpackDevMiddleware = require('webpack-dev-middleware');
-    let webpackConfig = require('./' + config.webpackConfig);
-    let compiler = webpack(webpackConfig);
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackConfig = require(`./${config.webpackConfig}`);
+    const compiler = webpack(webpackConfig);
     app.use(webpackDevMiddleware(compiler, {
         publicPath: webpackConfig.output.publicPath,
-        stats: { colors: true }
+        stats: { colors: true },
     }));
 } else {
-    app.use(express.static(__dirname + '/lib'));
+    app.use(express.static(`${__dirname}/lib`));
 }
 
-let Game = require('./models/game');
+const Game = require('./models/game');
 let game;
 
 // TODO: Move everything below into separate files
-app.get('/', function(request, response) {
+app.get('/', (request, response) => {  // eslint-disable-line no-unused-vars
     response.render('index');
 });
 
-io.on('connection', function (socket) {
+io.on('connection', socket => {
     if (!game) {
         console.log('game created');
         game = new Game();
@@ -42,7 +44,7 @@ io.on('connection', function (socket) {
     console.log('A new user connected!');
     socket.emit('game', game);
 
-    socket.on('disconnect', function() {
+    socket.on('disconnect', () => {
         console.log('user disconnected');
         if (socket.username) {
             game.users[socket.username].status = 'disconnected';
@@ -50,12 +52,12 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('join', function (username) {
+    socket.on('join', username => {
         socket.username = username;
         if (game.users[username] && game.users[username].status === 'connected')
             return void socket.emit('joinErr', `${username} is already taken. Please choose a new username`);
 
-        game.users[username] = { username: username, status: 'connected' };
+        game.users[username] = { username, status: 'connected' };
         socket.emit('joined', username);
         io.sockets.emit('game', game);
     });
@@ -66,6 +68,6 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(3000, function () {
+http.listen(PORT, () => {
     console.log('Join Express Server at http://localhost:3000/');
 });

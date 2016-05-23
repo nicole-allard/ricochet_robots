@@ -1,6 +1,6 @@
 'use strict';
 
-let constants = require('./constants');
+const constants = require('./constants');
 
 module.exports = class Space {
     constructor (options) {
@@ -15,8 +15,8 @@ module.exports = class Space {
         // (a corner) that's not up against the edge of
         // the board.
         return !this.token && this.walls.length === 2 &&
-            this.coordinates.x && this.coordinates.x !== constants.WIDTH-1 &&
-            this.coordinates.y && this.coordinates.y !== constants.HEIGHT-1;
+            this.coordinates.x && this.coordinates.x !== constants.WIDTH - 1 &&
+            this.coordinates.y && this.coordinates.y !== constants.HEIGHT - 1;
     }
 
     isValidRobotSpace () {

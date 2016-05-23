@@ -1,22 +1,22 @@
 'use strict';
 
-let React = require('react');
+const React = require('react');
 
-let Login = require('./login');
-let Board = require('./board');
+const Login = require('./login');
+const Board = require('./board');
 let Actions = require('./actions');
 
-let constants = require('./constants');
-let cookieUtils = require('./utils/cookies');
+const constants = require('./constants');
+const cookieUtils = require('./utils/cookies');
 
 module.exports = class App extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
             username: null,
             users: {},
             errs: {},
-            round: {}
+            round: {},
         };
     }
 
@@ -32,8 +32,8 @@ module.exports = class App extends React.Component {
             evt.preventDefault();
 
         if (this.state.round.active &&
-            !window.confirm('Are you sure you want to stop the current round?'))
-
+            !window.confirm('Are you sure you want to stop the current round?')
+        )
             return;
 
         this.socket.emit('newRound');
@@ -48,13 +48,13 @@ module.exports = class App extends React.Component {
      * previous join errors. Also set a session auth cookie in
      * case the user is disconnected.
      *
-     * @param  {String} username
+     * @param  {String} username - the name of the user who has joined
      */
     onJoin (username) {
         cookieUtils.create(constants.AUTH_COOKIE, username);
         this.setState({
-            username: username,
-            errs: this.getUpdatedErrs('join', null)
+            username,
+            errs: this.getUpdatedErrs('join', null),
         });
     }
 

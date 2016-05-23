@@ -1,26 +1,25 @@
 'use strict';
 
-let React = require('react');
-let constants = require('./constants');
+const React = require('react');
 
 class Actions extends React.Component {
     constructor (props) {
         super(props);
 
         this.state = {
-            numMoves: 0
+            numMoves: 0,
         };
     }
 
     updateNumMoves (evt) {
         // TODO: make this work :(
         // for ex: it shouldn't parse input value if it wasn't a number
-        let delta = typeof(evt) === 'number' ?
+        const delta = typeof evt === 'number' ?
             evt :
-            parseInt(evt.target.value);
+            parseInt(evt.target.value, 10);
 
         this.setState({
-            numMoves: this.state.numMoves + delta
+            numMoves: this.state.numMoves + delta,
         });
     }
 
@@ -47,11 +46,11 @@ class Actions extends React.Component {
             </div>
         );
     }
-};
+}
 
 Actions.PropTypes = {
     newRound: React.PropTypes.func.isRequired,
-    isRoundActive: React.PropTypes.bool
+    isRoundActive: React.PropTypes.bool,
 };
 
 module.exports = Actions;

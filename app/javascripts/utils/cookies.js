@@ -1,33 +1,33 @@
 'use strict';
 
-var doc = window.document;
+const doc = window.document;
 module.exports = {
-    create: function (name, value, options) {
+    create: (name, value, options) => {
         if (!options)
             options = {};
 
-        var cookie = name + '=' + value + '; path=' + (options.path || '/');
-        var domain = options.domain;
-        var expiresIn = options.expiresIn;
+        let cookie = `${name}=${value}; path=${(options.path || '/')}`;
+        const domain = options.domain;
+        const expiresIn = options.expiresIn;
 
         if (domain)
-            cookie += '; domain=.' + domain;
+            cookie += `; domain=.${domain}`;
 
-        if (typeof(expiresIn) === 'number') {
+        if (typeof expiresIn === 'number') {
             // expiresIn is in ms
-            var date = new Date(new Date().getTime() + expiresIn);
-            cookie += '; expires=' + date.toGMTString();
+            const date = new Date(new Date().getTime() + expiresIn);
+            cookie += `; expires=${date.toGMTString()}`;
         }
 
         doc.cookie = cookie;
     },
 
-    read: function (name) {
-        var nameEQ = name + '=';
-        var cookies = doc.cookie.split(';');
-        var cookie;
+    read: name => {
+        const nameEQ = `${name}=`;
+        const cookies = doc.cookie.split(';');
+        let cookie;
 
-        for (var i = 0; i < cookies.length; i++) {
+        for (let i = 0; i < cookies.length; i++) {
             cookie = cookies[i].replace(/^\s+/, '');
 
             if (cookie.indexOf(nameEQ) === 0)
@@ -35,5 +35,5 @@ module.exports = {
         }
 
         return null;
-    }
+    },
 };
