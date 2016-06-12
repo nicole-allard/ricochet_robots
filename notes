@@ -6,6 +6,7 @@ Go back and fix:
     - Move socket communication into its own file (both on BE and FE)
     - Merge BE and FE models
     - Move statuses and magic numbers into constants
+    - Move focus back to window after button clicks so that the enter key works. Or change the submit key from enter.
 
 board
     spaces

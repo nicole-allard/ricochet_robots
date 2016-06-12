@@ -1,15 +1,47 @@
 'use strict';
 
 const React = require('react');
+const constants = require('../constants');
 
 class Actions extends React.Component {
     constructor (props) {
         super(props);
 
+        this.handleKeyEvent = this.handleKeyEvent.bind(this);
+
         this.state = {
             numMoves: 0,
             timeRemaining: Infinity,
         };
+    }
+
+    componentDidMount () {
+        let doc = window.document;
+        doc.addEventListener('keydown', this.handleKeyEvent);
+    }
+
+    componentWillUnmount () {
+        let doc = window.document;
+        doc.removeEventListener('keydown', this.handleKeyEvent);
+    }
+
+    handleKeyEvent (evt) {
+        // None of the keyboard shortcuts will use modifiers
+        // Ignore keys pressed within inputs, those should be handled elsewhere
+        if (evt.ctrlKey || evt.altKey || evt.metaKey || evt.target.tagName === 'input')
+            return;
+
+        const charCode = evt.which;
+        const funcArgs = constants.HOTKEYS[charCode];
+        if (!funcArgs)
+            return;
+
+        const func = this[funcArgs[0]];
+        if (!func)
+            return;
+
+        console.log('calling ' + funcArgs[0]);
+        func.apply(this, funcArgs.slice(1));
     }
 
     componentWillReceiveProps (newProps) {
@@ -42,11 +74,19 @@ class Actions extends React.Component {
         });
     }
 
+    submitBid () {
+        this.props.submitBid(this.state.numMoves);
+    }
+
+    newRound () {
+        this.props.newRound();
+    }
+
     render () {
         return (
             <div>
                 <div>
-                    <button onClick={this.props.newRound}>
+                    <button onClick={this.newRound.bind(this)}>
                         Start New Round
                     </button>
                 </div>
@@ -64,11 +104,11 @@ class Actions extends React.Component {
                                 <button onClick={this.updateNumMoves.bind(this, -1)}>
                                     -
                                 </button>
-                                <input type="text" value={this.state.numMoves} onChange={evt => { this.setNumMoves(evt.target.value); }} />
+                                <input type="text" value={this.state.numMoves} onChange={evt => { evt.preventDefault(); this.setNumMoves(evt.target.value); }} />
                                 <button onClick={this.updateNumMoves.bind(this, 1)}>
                                     +
                                 </button>
-                                <button onClick={() => { this.props.submitBid(this.state.numMoves); }}>
+                                <button onClick={this.submitBid.bind(this)}>
                                     Submit
                                 </button>
                             </div>
@@ -91,6 +131,7 @@ Actions.PropTypes = {
     submitBid: React.PropTypes.func.isRequired,
     timeout: React.PropTypes.number,
     acceptingBids: React.PropTypes.bool.isRequired,
+    userHasAcceptedBid: React.PropTypes.bool.isRequired,
 };
 
 module.exports = Actions;

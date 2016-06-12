@@ -2,7 +2,7 @@
 
 let React = require('react');
 let ReactDOM = require('react-dom');
-let App = require('./app.js');
+let App = require('./views/app.js');
 
 require('../stylesheets/style.scss');
 

@@ -6,8 +6,8 @@ const Login = require('./login');
 const Board = require('./board');
 let Actions = require('./actions');
 
-const constants = require('./constants');
-const cookieUtils = require('./utils/cookies');
+const constants = require('../constants');
+const cookieUtils = require('../utils/cookies');
 
 module.exports = class App extends React.Component {
     constructor (props) {
@@ -111,10 +111,10 @@ module.exports = class App extends React.Component {
                                 submitBid={this.submitBid.bind(this)}
                                 timeout={this.state.round.timeout}
                                 acceptingBids={!activeBidUsername}
+                                userHasAcceptedBid={activeBidUsername === this.state.username}
                             />
                             <Board
                                 spaces={this.state.board.spaces}
-                                userHasAcceptedBid={activeBidUsername === this.state.username}
                             />
                         </section>
                         : null

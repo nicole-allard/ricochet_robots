@@ -1,7 +1,7 @@
 'use strict';
 
 const Board = require('./board');
-const constants = require('./constants');
+const constants = require('../constants');
 
 module.exports = class Game {
     constructor () {

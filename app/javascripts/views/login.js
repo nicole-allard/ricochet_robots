@@ -1,8 +1,8 @@
 'use strict';
 
 let React = require('react');
-let constants = require('./constants');
-let cookieUtils = require('./utils/cookies');
+let constants = require('../constants');
+let cookieUtils = require('../utils/cookies');
 
 class Login extends React.Component {
     constructor (props) {
