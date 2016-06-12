@@ -11,15 +11,13 @@ class Actions extends React.Component {
         };
     }
 
-    updateNumMoves (evt) {
-        // TODO: make this work :(
-        // for ex: it shouldn't parse input value if it wasn't a number
-        const delta = typeof evt === 'number' ?
-            evt :
-            parseInt(evt.target.value, 10);
+    updateNumMoves (delta) {
+        this.setNumMoves(Math.max(0, (parseInt(this.state.numMoves, 10) || 0) + parseInt(delta, 10)));
+    }
 
+    setNumMoves(value) {
         this.setState({
-            numMoves: this.state.numMoves + delta,
+            numMoves: value,
         });
     }
 
@@ -36,7 +34,7 @@ class Actions extends React.Component {
                         <button onClick={this.updateNumMoves.bind(this, -1)}>
                             -
                         </button>
-                        <input type="text" value={this.state.numMoves} onChange={this.updateNumMoves.bind(this)} />
+                        <input type="text" value={this.state.numMoves} onChange={evt => { this.setNumMoves(evt.target.value); }} />
                         <button onClick={this.updateNumMoves.bind(this, 1)}>
                             +
                         </button>

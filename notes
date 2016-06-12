@@ -1,8 +1,11 @@
 Go back and fix:
-    - Fix styling: N and S walls are cut off, only half the wall shows
+    - Fix styling:
+        - N and S walls are cut off, only half the wall shows
+        - Can't show a token and a robot on the same space
     - Add a linter
     - Move socket communication into its own file (both on BE and FE)
     - Merge BE and FE models
+
 
 board
     spaces
