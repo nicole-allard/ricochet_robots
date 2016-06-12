@@ -66,6 +66,11 @@ io.on('connection', socket => {
         game.startRound();
         io.sockets.emit('game', game);
     });
+
+    socket.on('bid', bid => {
+        game.newBid(socket.username, bid);
+        io.sockets.emit('game', game);
+    });
 });
 
 http.listen(PORT, () => {

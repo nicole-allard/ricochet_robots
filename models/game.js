@@ -28,5 +28,21 @@ module.exports = class Game {
             color = constants.COLORS[Math.floor(Math.random() * constants.COLORS.length)];
 
         this.round.targetSpace.token = color;
+
+        this.clearBids();
+    }
+
+    clearBids () {
+        Object.keys(this.users).forEach(Function.bind.call(username => {
+            this.users[username].bids = [];
+        }, this));
+    }
+
+    newBid (username, bid) {
+        const user = this.users[username];
+        if (!user)
+            return;
+
+        user.bids.push(bid);
     }
 };

@@ -15,7 +15,7 @@ class Actions extends React.Component {
         this.setNumMoves(Math.max(0, (parseInt(this.state.numMoves, 10) || 0) + parseInt(delta, 10)));
     }
 
-    setNumMoves(value) {
+    setNumMoves (value) {
         this.setState({
             numMoves: value,
         });
@@ -38,6 +38,9 @@ class Actions extends React.Component {
                         <button onClick={this.updateNumMoves.bind(this, 1)}>
                             +
                         </button>
+                        <button onClick={() => { this.props.submitBid(this.state.numMoves); }}>
+                            Submit
+                        </button>
                     </div>
                     : null
                 }
@@ -49,6 +52,7 @@ class Actions extends React.Component {
 Actions.PropTypes = {
     newRound: React.PropTypes.func.isRequired,
     isRoundActive: React.PropTypes.bool,
+
 };
 
 module.exports = Actions;

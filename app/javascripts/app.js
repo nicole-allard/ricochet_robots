@@ -39,6 +39,10 @@ module.exports = class App extends React.Component {
         this.socket.emit('newRound');
     }
 
+    submitBid (bid) {
+        this.socket.emit('bid', bid);
+    }
+
     updateGame (game) {
         this.setState(game);
     }
@@ -98,6 +102,7 @@ module.exports = class App extends React.Component {
                             <Actions
                                 newRound={this.newRound.bind(this)}
                                 isRoundActive={!!this.state.round.active}
+                                submitBid={this.submitBid.bind(this)}
                             />
                             <Board
                                 spaces={this.state.board.spaces}
