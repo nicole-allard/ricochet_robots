@@ -5,6 +5,7 @@ Go back and fix:
     - Add a linter
     - Move socket communication into its own file (both on BE and FE)
     - Merge BE and FE models
+    - Move statuses and magic numbers into constants
 
 board
     spaces

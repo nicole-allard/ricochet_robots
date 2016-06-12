@@ -85,6 +85,11 @@ module.exports = class App extends React.Component {
     }
 
     render () {
+        let activeBidUsername = this.state.round.active &&
+            Object.keys(this.state.users).find(Function.bind.call(username => {
+                return !!this.state.users[username].bids.find(bid => bid.status === 'accepted');
+            }, this));
+
         return (
             <div>
                 <ul>
@@ -105,9 +110,11 @@ module.exports = class App extends React.Component {
                                 isRoundActive={!!this.state.round.active}
                                 submitBid={this.submitBid.bind(this)}
                                 timeout={this.state.round.timeout}
+                                acceptingBids={!activeBidUsername}
                             />
                             <Board
                                 spaces={this.state.board.spaces}
+                                userHasAcceptedBid={activeBidUsername === this.state.username}
                             />
                         </section>
                         : null

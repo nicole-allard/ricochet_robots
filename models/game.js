@@ -81,7 +81,7 @@ module.exports = class Game {
         if (!minBid)
             return;
 
-        minBid.status = 'active';
+        minBid.status = 'accepted';
         onAcceptBid();
     }
 };

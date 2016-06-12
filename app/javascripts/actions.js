@@ -52,22 +52,31 @@ class Actions extends React.Component {
                 </div>
                 {this.props.isRoundActive ?
                     <div>
-                        <div>
-                            {this.state.timeRemaining < Infinity ?
-                                <span>Time remaining: {this.state.timeRemaining}</span>
-                                : null
-                            }
-                        </div>
-                        <button onClick={this.updateNumMoves.bind(this, -1)}>
-                            -
-                        </button>
-                        <input type="text" value={this.state.numMoves} onChange={evt => { this.setNumMoves(evt.target.value); }} />
-                        <button onClick={this.updateNumMoves.bind(this, 1)}>
-                            +
-                        </button>
-                        <button onClick={() => { this.props.submitBid(this.state.numMoves); }}>
-                            Submit
-                        </button>
+                        {this.state.timeRemaining < Infinity ?
+                            <div>
+                                Time remaining: {this.state.timeRemaining}
+                            </div>
+                            : null
+                        }
+
+                        {this.props.acceptingBids ?
+                            <div>
+                                <button onClick={this.updateNumMoves.bind(this, -1)}>
+                                    -
+                                </button>
+                                <input type="text" value={this.state.numMoves} onChange={evt => { this.setNumMoves(evt.target.value); }} />
+                                <button onClick={this.updateNumMoves.bind(this, 1)}>
+                                    +
+                                </button>
+                                <button onClick={() => { this.props.submitBid(this.state.numMoves); }}>
+                                    Submit
+                                </button>
+                            </div>
+                            :
+                            <div>
+                                Please move the robots
+                            </div>
+                        }
                     </div>
                     : null
                 }
@@ -81,6 +90,7 @@ Actions.PropTypes = {
     isRoundActive: React.PropTypes.bool,
     submitBid: React.PropTypes.func.isRequired,
     timeout: React.PropTypes.number,
+    acceptingBids: React.PropTypes.bool.isRequired,
 };
 
 module.exports = Actions;
