@@ -52,7 +52,6 @@ class Actions extends React.Component {
 Actions.PropTypes = {
     newRound: React.PropTypes.func.isRequired,
     isRoundActive: React.PropTypes.bool,
-
 };
 
 module.exports = Actions;

@@ -6,7 +6,6 @@ Go back and fix:
     - Move socket communication into its own file (both on BE and FE)
     - Merge BE and FE models
 
-
 board
     spaces
         spaces adjacent (null if wall) {

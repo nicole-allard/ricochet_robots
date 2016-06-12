@@ -40,7 +40,8 @@ module.exports = class App extends React.Component {
     }
 
     submitBid (bid) {
-        this.socket.emit('bid', bid);
+        // TODO: Handle timezones
+        this.socket.emit('bid', bid, new Date().getTime());
     }
 
     updateGame (game) {

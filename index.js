@@ -67,8 +67,8 @@ io.on('connection', socket => {
         io.sockets.emit('game', game);
     });
 
-    socket.on('bid', bid => {
-        game.newBid(socket.username, bid);
+    socket.on('bid', (bid, timestamp) => {
+        game.newBid(socket.username, bid, timestamp);
         io.sockets.emit('game', game);
     });
 });

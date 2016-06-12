@@ -38,11 +38,11 @@ module.exports = class Game {
         }, this));
     }
 
-    newBid (username, bid) {
+    newBid (username, bid, timestamp) {
         const user = this.users[username];
         if (!user)
             return;
 
-        user.bids.push(bid);
+        user.bids.push({ bid, timestamp });
     }
 };
