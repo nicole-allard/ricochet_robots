@@ -104,6 +104,7 @@ module.exports = class App extends React.Component {
                                 newRound={this.newRound.bind(this)}
                                 isRoundActive={!!this.state.round.active}
                                 submitBid={this.submitBid.bind(this)}
+                                timeout={this.state.round.timeout}
                             />
                             <Board
                                 spaces={this.state.board.spaces}

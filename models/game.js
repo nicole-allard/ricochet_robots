@@ -19,6 +19,7 @@ module.exports = class Game {
             active: true,
             solnClaims: [],
             targetSpace: this.board.getRandomSpace('isValidTokenSpace'),
+            timeout: Infinity,
         };
 
         let color;
@@ -39,9 +40,21 @@ module.exports = class Game {
     }
 
     newBid (username, bid, timestamp) {
+        // Check for:
+        //  valid user
+        //  active round
+        //  non-expired timer
+        //  valid bid (greater than 1)
         const user = this.users[username];
-        if (!user)
+        if (!user || !this.round.active || new Date().getTime() > this.round.timeout || bid < 2)
             return;
+
+        if (Object.keys(this.users).every(Function.bind.call(username => {
+            return !this.users[username].bids.length;
+        })))
+            // This is the first bid of this round. Start the timer.
+            // TODO: handle timezones
+            this.round.timeout = new Date().getTime() + (1000 * 30);
 
         user.bids.push({ bid, timestamp });
     }
