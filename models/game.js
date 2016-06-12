@@ -39,7 +39,7 @@ module.exports = class Game {
         }, this));
     }
 
-    newBid (username, bid, timestamp) {
+    newBid (username, bid, timestamp, onAcceptBid) {
         // Check for:
         //  valid user
         //  active round
@@ -51,11 +51,37 @@ module.exports = class Game {
 
         if (Object.keys(this.users).every(Function.bind.call(username => {
             return !this.users[username].bids.length;
-        })))
+        }))) {
             // This is the first bid of this round. Start the timer.
             // TODO: handle timezones
-            this.round.timeout = new Date().getTime() + (1000 * 30);
+            const time = 1000*10;
+            this.round.timeout = new Date().getTime() + time;
+            setTimeout(this.acceptBid.bind(this, onAcceptBid), time);
+        }
 
         user.bids.push({ bid, timestamp });
+    }
+
+    acceptBid (onAcceptBid) {
+        // Find the winning bid, that is the bid that is the lowest, ties broken
+        // by timestamp. If bid is cancelled, move on to the next.
+
+        let minBid = { bid: Infinity, timestamp: Infinity };
+        let bidIsLower;
+        Object.keys(this.users).forEach(Function.bind.call(username => {
+            this.users[username].bids.forEach(bid => {
+                bidIsLower = bid.bid < minBid.bid ||
+                     (bid.bid === minBid.bid && bid.timestamp < minBid.timestamp);
+
+                if (bid.status !== 'cancelled' && bidIsLower)
+                    minBid = bid;
+            });
+        }, this));
+
+        if (!minBid)
+            return;
+
+        minBid.status = 'active';
+        onAcceptBid();
     }
 };
