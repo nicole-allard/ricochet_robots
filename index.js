@@ -57,7 +57,7 @@ io.on('connection', socket => {
         if (game.users[username] && game.users[username].status === 'connected')
             return void socket.emit('joinErr', `${username} is already taken. Please choose a new username`);
 
-        game.users[username] = { username, status: 'connected', bids: [] };
+        game.users[username] = { username, status: 'connected' };
         socket.emit('joined', username);
         io.sockets.emit('game', game);
     });

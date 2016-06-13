@@ -48,6 +48,44 @@ module.exports = class App extends React.Component {
         this.setState(game);
     }
 
+    getActiveBidIndex () {
+        if (!this.state.round.active)
+            return -1;
+
+
+        return this.state.round.bids.findIndex(bid => bid.status === 'accepted');
+    }
+
+    moveRobot (color, dir) {
+        let activeBidIndex = this.getActiveBidIndex();
+        let activeBid = this.state.round.bids[activeBidIndex];
+        if (!activeBid || activeBid.username !== this.state.username)
+            return;
+
+        let newMoves = activeBid.moves.slice(0);
+        let latestMove = newMoves[newMoves.legnth - 1];
+        if (latestMove.color !== color) {
+            latestMove = {
+                color,
+                moves: [],
+            };
+
+            newMoves.push(latestMove);
+        }
+
+        let bidsCopy = this.state.round.bids.slice(0);
+        bidsCopy.splice(activeBidIndex, 1, Object.assign({}, activeBid, {
+            moves: newMoves
+        }))
+
+        latestMove.moves.push(dir);
+        this.setState({
+            round: Object.assign({}, this.state.round, {
+                bids: bidsCopy
+            }),
+        });
+    }
+
     /**
      * On a successful join, set username and clear out any
      * previous join errors. Also set a session auth cookie in
@@ -85,18 +123,27 @@ module.exports = class App extends React.Component {
     }
 
     render () {
-        let activeBidUsername = this.state.round.active &&
-            Object.keys(this.state.users).find(Function.bind.call(username => {
-                return !!this.state.users[username].bids.find(bid => bid.status === 'accepted');
-            }, this));
-
+        const activeBidIndex = this.getActiveBidIndex();
+        const activeBid = activeBidIndex > -1 && this.state.round.bids[activeBidIndex];
         return (
             <div>
                 <ul>
-                    {Object.keys(this.state.users).map((username) => {
+                    {Object.keys(this.state.users).map(username => {
                         return (
                             <li key={username}>
                                 {JSON.stringify(this.state.users[username])}
+                            </li>
+                        );
+                    }, this)}
+                </ul>
+
+                <ul>
+                    {(this.state.round.bids || []).map((bid, i) => {
+                        return (
+                            <li key={i}>
+                                <b>{`${bid.username} : ${bid.bid}`}</b>
+                                <i>{bid.timestamp}</i>
+                                {JSON.stringify(bid.moves || [])}
                             </li>
                         );
                     }, this)}
@@ -110,8 +157,9 @@ module.exports = class App extends React.Component {
                                 isRoundActive={!!this.state.round.active}
                                 submitBid={this.submitBid.bind(this)}
                                 timeout={this.state.round.timeout}
-                                acceptingBids={!activeBidUsername}
-                                userHasAcceptedBid={activeBidUsername === this.state.username}
+                                activeBid={activeBid}
+                                userHasAcceptedBid={activeBid.username === this.state.username}
+                                moveRobot={this.moveRobot.bind(this)}
                             />
                             <Board
                                 spaces={this.state.board.spaces}

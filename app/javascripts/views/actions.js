@@ -12,6 +12,7 @@ class Actions extends React.Component {
         this.state = {
             numMoves: 0,
             timeRemaining: Infinity,
+            activeColor: null,
         };
     }
 
@@ -40,7 +41,6 @@ class Actions extends React.Component {
         if (!func)
             return;
 
-        console.log('calling ' + funcArgs[0]);
         func.apply(this, funcArgs.slice(1));
     }
 
@@ -69,17 +69,33 @@ class Actions extends React.Component {
     }
 
     setNumMoves (value) {
+        if (this.props.activeBid)
+            return;
+
         this.setState({
             numMoves: value,
         });
     }
 
     submitBid () {
+        if (this.props.activeBid)
+            return;
+
         this.props.submitBid(this.state.numMoves);
     }
 
     newRound () {
         this.props.newRound();
+    }
+
+    switchColor (color) {
+        this.setState({
+            activeColor: color
+        });
+    }
+
+    move (dir) {
+        this.props.moveRobot(this.state.activeColor, dir);
     }
 
     render () {
@@ -99,7 +115,7 @@ class Actions extends React.Component {
                             : null
                         }
 
-                        {this.props.acceptingBids ?
+                        {!this.props.activeBid ?
                             <div>
                                 <button onClick={this.updateNumMoves.bind(this, -1)}>
                                     -
@@ -112,10 +128,14 @@ class Actions extends React.Component {
                                     Submit
                                 </button>
                             </div>
-                            :
+                            : null
+                        }
+
+                        {this.props.userHasActiveBid ?
                             <div>
                                 Please move the robots
                             </div>
+                            : null
                         }
                     </div>
                     : null
@@ -130,8 +150,13 @@ Actions.PropTypes = {
     isRoundActive: React.PropTypes.bool,
     submitBid: React.PropTypes.func.isRequired,
     timeout: React.PropTypes.number,
-    acceptingBids: React.PropTypes.bool.isRequired,
-    userHasAcceptedBid: React.PropTypes.bool.isRequired,
+    activeBid: React.PropTypes.shape({
+        bid: React.PropTypes.number.isRequired,
+        username: React.PropTypes.string.isRequired,
+        moves: React.PropTypes.array.isRequired,
+    }),
+    userHasActiveBid: React.PropTypes.bool.isRequired,
+    moveRobot: React.PropTypes.func.isRequired,
 };
 
 module.exports = Actions;

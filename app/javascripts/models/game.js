@@ -20,6 +20,7 @@ module.exports = class Game {
             solnClaims: [],
             targetSpace: this.board.getRandomSpace('isValidTokenSpace'),
             timeout: Infinity,
+            bids: [],
         };
 
         let color;
@@ -29,29 +30,17 @@ module.exports = class Game {
             color = constants.COLORS[Math.floor(Math.random() * constants.COLORS.length)];
 
         this.round.targetSpace.token = color;
-
-        this.clearBids();
-    }
-
-    clearBids () {
-        Object.keys(this.users).forEach(Function.bind.call(username => {
-            this.users[username].bids = [];
-        }, this));
     }
 
     newBid (username, bid, timestamp, onAcceptBid) {
         // Check for:
-        //  valid user
         //  active round
         //  non-expired timer
         //  valid bid (greater than 1)
-        const user = this.users[username];
-        if (!user || !this.round.active || new Date().getTime() > this.round.timeout || bid < 2)
+        if (!this.round.active || new Date().getTime() > this.round.timeout || bid < 2)
             return;
 
-        if (Object.keys(this.users).every(Function.bind.call(username => {
-            return !this.users[username].bids.length;
-        }))) {
+        if (!this.round.bids.length) {
             // This is the first bid of this round. Start the timer.
             // TODO: handle timezones
             const time = 1000*10;
@@ -59,29 +48,31 @@ module.exports = class Game {
             setTimeout(this.acceptBid.bind(this, onAcceptBid), time);
         }
 
-        user.bids.push({ bid, timestamp });
+        this.insertBid(this.round.bids, { username, bid, timestamp });
+    }
+
+    insertBid (bids, bid) {
+        let i;
+        for (i = 0; i < bids.length; i++) {
+            if (bids[i].bid > bid.bid ||
+                (bids[i].bid === bid.bid && bids[i].timestamp > bid.timestamp))
+                return;
+        }
+
+        this.round.bids.splice(i, 0, bid);
     }
 
     acceptBid (onAcceptBid) {
-        // Find the winning bid, that is the bid that is the lowest, ties broken
-        // by timestamp. If bid is cancelled, move on to the next.
+        let i;
+        for (i = 0; i < this.round.bids.length; i++) {
+            if (this.round.bids[i].status !== 'cancelled')
+                return;
+        }
 
-        let minBid = { bid: Infinity, timestamp: Infinity };
-        let bidIsLower;
-        Object.keys(this.users).forEach(Function.bind.call(username => {
-            this.users[username].bids.forEach(bid => {
-                bidIsLower = bid.bid < minBid.bid ||
-                     (bid.bid === minBid.bid && bid.timestamp < minBid.timestamp);
-
-                if (bid.status !== 'cancelled' && bidIsLower)
-                    minBid = bid;
-            });
-        }, this));
-
-        if (!minBid)
-            return;
-
-        minBid.status = 'accepted';
+        Object.assign(this.round.bids[i], {
+            status: 'accepted',
+            moves: [],
+        });
         onAcceptBid();
     }
 };
